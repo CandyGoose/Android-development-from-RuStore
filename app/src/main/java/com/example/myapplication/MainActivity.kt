@@ -104,12 +104,17 @@ fun IntentScreen(
                     onShowMessage(context.getString(R.string.error_empty_text))
                     return@Button
                 }
-                val digitsOnly = input.filter { it.isDigit() || it == '+' }
-                if (digitsOnly.length < 10 || !digitsOnly.any { it.isDigit() }) {
+                val hasLetters = input.any { c -> c.isLetter() }
+                if (hasLetters) {
+                    onShowMessage(context.getString(R.string.error_phone_no_letters))
+                    return@Button
+                }
+                val digitsOnly = input.filter { c -> c.isDigit() || c == '+' }
+                if (digitsOnly.length < 10 || !digitsOnly.any { c -> c.isDigit() }) {
                     onShowMessage(context.getString(R.string.error_invalid_phone))
                     return@Button
                 }
-                val uri = Uri.parse("tel:${Uri.encode(input)}")
+                val uri = Uri.parse("tel:${Uri.encode(digitsOnly)}")
                 val intent = Intent(Intent.ACTION_DIAL).apply { data = uri }
                 try {
                     context.startActivity(intent)
