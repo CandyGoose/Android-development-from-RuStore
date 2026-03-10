@@ -9,4 +9,11 @@
     <string name="error_invalid_phone">Введите корректный номер телефона</string>
     <string name="error_phone_no_letters">В номере не может быть букв</string>
     <string name="error_empty_share">Нечего отправлять. Введите текст.</string>
+    <string name="app_details_age">Возраст</string>
+    <string name="app_details_size">Размер</string>
+    <string name="install">Установить</string>
+    <string name="app_details_screenshots">Скриншоты</string>
+    <string name="app_details_description">Описание приложения</string>
+    <string name="app_details_read_more">Читать подробнее</string>
+    <string name="app_details_developer">Разработчик</string>
 </resources>
