@@ -7,5 +7,6 @@
     <string name="btn_share_text">Поделиться текстом</string>
     <string name="error_empty_text">Введите текст</string>
     <string name="error_invalid_phone">Введите корректный номер телефона</string>
+    <string name="error_phone_no_letters">В номере не может быть букв</string>
     <string name="error_empty_share">Нечего отправлять. Введите текст.</string>
 </resources>
