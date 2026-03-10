@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="second_activity_title">Вторая Activity</string>
+    <string name="hint_edit_text">Введите текст или номер телефона</string>
+    <string name="btn_open_second">Открыть вторую Activity</string>
+    <string name="btn_call_friend">Позвонить другу</string>
+    <string name="btn_share_text">Поделиться текстом</string>
+    <string name="error_empty_text">Введите текст</string>
+    <string name="error_invalid_phone">Введите корректный номер телефона</string>
+    <string name="error_empty_share">Нечего отправлять. Введите текст.</string>
 </resources>
