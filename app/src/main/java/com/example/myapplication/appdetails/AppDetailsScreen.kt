@@ -1,4 +1,4 @@
-package com.example.myapplication.appdetails
+package com.example.myapplication.presentation.appdetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,15 +18,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.myapplication.data.HardcodedApps
+import com.example.myapplication.appdetails.AppDetailsContent
+import com.example.myapplication.appdetails.AppDetailsState
+import com.example.myapplication.domain.AppRepository
 
 @Composable
 fun AppDetailsScreen(
     appId: String,
     navController: NavController,
+    appRepository: AppRepository,
     modifier: Modifier = Modifier
 ) {
-    val appDetails = HardcodedApps.getById(appId)
+    val appDetails = appRepository.getAppById(appId)
     var descriptionCollapsed by remember { mutableStateOf(false) }
 
     if (appDetails == null) {
