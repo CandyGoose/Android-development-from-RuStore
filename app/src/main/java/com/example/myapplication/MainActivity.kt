@@ -30,7 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.navigation.AppNavGraph
+import com.example.myapplication.data.HardcodedAppRepository
+import com.example.myapplication.presentation.navigation.AppNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 val snackbarHostState = remember { SnackbarHostState() }
                 val coroutineScope = rememberCoroutineScope()
+                val appRepository = remember { HardcodedAppRepository() }
 
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
@@ -53,7 +55,8 @@ class MainActivity : ComponentActivity() {
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar(message)
                             }
-                        }
+                        },
+                        appRepository = appRepository
                     )
                 }
             }
