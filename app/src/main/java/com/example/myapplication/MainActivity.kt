@@ -40,7 +40,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                AppNavGraph(modifier = Modifier.fillMaxSize())
+                val snackbarHostState = remember { SnackbarHostState() }
+                val coroutineScope = rememberCoroutineScope()
+
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+                ) { _ ->
+                    AppNavGraph(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        onShowMessage = { message ->
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(message)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
