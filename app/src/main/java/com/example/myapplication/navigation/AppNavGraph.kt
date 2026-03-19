@@ -28,8 +28,7 @@ fun AppNavGraph(
                 onAppClick = { appId ->
                     navController.navigate(Routes.appDetails(appId))
                 },
-                onShowMessage = onShowMessage,
-                appRepository = appRepository
+                onShowMessage = onShowMessage
             )
         }
         composable(

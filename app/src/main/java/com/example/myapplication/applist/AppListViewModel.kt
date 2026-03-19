@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.AppDetails
 import com.example.myapplication.domain.AppRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,7 +22,8 @@ sealed interface AppListEvent {
     data class ShowLogoSnackbar(val message: String) : AppListEvent
 }
 
-class AppListViewModel(
+@HiltViewModel
+class AppListViewModel @Inject constructor(
     private val appRepository: AppRepository
 ) : ViewModel() {
 

@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +37,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.example.myapplication.domain.AppDetails
-import com.example.myapplication.domain.AppRepository
 import com.example.myapplication.ui.theme.RuStoreBlue
 import kotlinx.coroutines.flow.collectLatest
 
@@ -45,9 +45,7 @@ fun AppListScreen(
     onAppClick: (String) -> Unit,
     onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
-    appRepository: AppRepository,
-    viewModelFactory: AppListViewModelFactory = AppListViewModelFactory(appRepository),
-    viewModel: AppListViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
+    viewModel: AppListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
