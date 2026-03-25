@@ -30,18 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.domain.AppRepository
 import com.example.myapplication.presentation.navigation.AppNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var appRepository: AppRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +56,7 @@ class MainActivity : ComponentActivity() {
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar(message)
                             }
-                        },
-                        appRepository = appRepository
+                        }
                     )
                 }
             }

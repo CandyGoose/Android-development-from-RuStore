@@ -9,14 +9,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.myapplication.presentation.appdetails.AppDetailsScreen
 import com.example.myapplication.presentation.applist.AppListScreen
-import com.example.myapplication.domain.AppRepository
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    onShowMessage: (String) -> Unit,
-    appRepository: AppRepository
+    onShowMessage: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -35,12 +33,7 @@ fun AppNavGraph(
             route = Routes.APP_DETAILS,
             arguments = listOf(navArgument("appId") { defaultValue = "" })
         ) { backStackEntry ->
-            val appId = backStackEntry.arguments?.getString("appId") ?: ""
-            AppDetailsScreen(
-                appId = appId,
-                navController = navController,
-                appRepository = appRepository
-            )
+            AppDetailsScreen(navController = navController)
         }
     }
 }
