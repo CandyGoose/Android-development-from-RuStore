@@ -18,7 +18,8 @@ class AppDetailsEntityMapper @Inject constructor() {
         size = domain.size,
         iconUrl = domain.iconUrl,
         screenshotUrlsJson = gson.toJson(domain.screenshotUrlList),
-        description = domain.description
+        description = domain.description,
+        isInWishlist = domain.isInWishlist
     )
 
     fun toDomain(entity: AppDetailsEntity): AppDetails = AppDetails(
@@ -30,7 +31,8 @@ class AppDetailsEntityMapper @Inject constructor() {
         size = entity.size,
         iconUrl = entity.iconUrl,
         screenshotUrlList = parseScreenshots(entity.screenshotUrlsJson),
-        description = entity.description
+        description = entity.description,
+        isInWishlist = entity.isInWishlist
     )
 
     private fun parseScreenshots(json: String): List<String> {
