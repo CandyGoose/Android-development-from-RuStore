@@ -1,4 +1,4 @@
-package com.example.myapplication.appdetails
+package com.example.myapplication.presentation.appdetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,46 +18,60 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.myapplication.data.HardcodedApps
+import com.example.myapplication.appdetails.AppDetailsContent
+import com.example.myapplication.appdetails.AppDetailsState
 
 @Composable
 fun AppDetailsScreen(
-    appId: String,
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AppDetailsViewModel = hiltViewModel()
 ) {
-    val appDetails = HardcodedApps.getById(appId)
+    val state by viewModel.state.collectAsStateWithLifecycle()
     var descriptionCollapsed by remember { mutableStateOf(false) }
 
-    if (appDetails == null) {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("Приложение не найдено")
+    when (val s = state) {
+        AppDetailsState.Loading -> {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
-        return
+
+        AppDetailsState.Error -> {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Не удалось загрузить приложение")
+            }
+        }
+
+        is AppDetailsState.Content -> {
+            val contentState = s.copy(descriptionCollapsed = descriptionCollapsed)
+            AppDetailsContent(
+                content = contentState,
+                onBackClick = { navController.navigateUp() },
+                onShareClick = { },
+                onWishlistClick = viewModel::toggleWishlist,
+                onInstallClick = { },
+                onReadMoreClick = { descriptionCollapsed = true },
+                onDeveloperClick = { },
+                modifier = modifier
+                    .fillMaxSize()
+                    .safeDrawingPadding()
+                    .verticalScroll(rememberScrollState())
+            )
+        }
     }
-
-    val contentState = AppDetailsState.Content(
-        appDetails = appDetails,
-        descriptionCollapsed = descriptionCollapsed
-    )
-
-    AppDetailsContent(
-        content = contentState,
-        onBackClick = { navController.navigateUp() },
-        onShareClick = { },
-        onInstallClick = { },
-        onReadMoreClick = { descriptionCollapsed = true },
-        onDeveloperClick = { },
-        modifier = modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
-            .verticalScroll(rememberScrollState())
-    )
 }
