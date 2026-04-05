@@ -3,7 +3,7 @@ package com.example.myapplication.presentation.applist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.AppDetails
-import com.example.myapplication.domain.AppRepository
+import com.example.myapplication.domain.GetAppsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,7 +25,7 @@ sealed interface AppListEvent {
 
 @HiltViewModel
 class AppListViewModel @Inject constructor(
-    private val appRepository: AppRepository
+    private val getAppsUseCase: GetAppsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AppListUiState())
@@ -36,7 +36,7 @@ class AppListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching { appRepository.getApps() }
+            runCatching { getAppsUseCase() }
                 .onSuccess { apps ->
                     _uiState.value = AppListUiState(apps = apps)
                 }

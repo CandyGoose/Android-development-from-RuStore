@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.appdetails.AppDetailsState
-import com.example.myapplication.domain.AppRepository
+import com.example.myapplication.domain.GetAppDetailsUseCase
+import com.example.myapplication.domain.ObserveAppDetailsUseCase
+import com.example.myapplication.domain.ToggleWishlistUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +19,9 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AppDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val appRepository: AppRepository
+    private val getAppDetailsUseCase: GetAppDetailsUseCase,
+    private val observeAppDetailsUseCase: ObserveAppDetailsUseCase,
+    private val toggleWishlistUseCase: ToggleWishlistUseCase
 ) : ViewModel() {
 
     private val appId: String = savedStateHandle.get<String>("appId").orEmpty()
@@ -32,14 +36,14 @@ class AppDetailsViewModel @Inject constructor(
 
     private fun loadAppDetails() {
         viewModelScope.launch {
-            runCatching { appRepository.getAppDetails(appId) }
+            runCatching { getAppDetailsUseCase(appId) }
                 .onFailure { _state.value = AppDetailsState.Error }
         }
     }
 
     private fun observeAppDetails() {
         viewModelScope.launch {
-            appRepository.observeAppDetails(appId)
+            observeAppDetailsUseCase(appId)
                 .catch { _state.value = AppDetailsState.Error }
                 .collect { appDetails ->
                     _state.value = AppDetailsState.Content(
@@ -52,7 +56,7 @@ class AppDetailsViewModel @Inject constructor(
 
     fun toggleWishlist() {
         viewModelScope.launch {
-            appRepository.toggleWishlist(appId)
+            toggleWishlistUseCase(appId)
         }
     }
 }
