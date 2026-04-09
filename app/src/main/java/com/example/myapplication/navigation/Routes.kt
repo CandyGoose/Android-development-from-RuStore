@@ -1,4 +1,4 @@
-package com.example.myapplication.navigation
+package com.example.myapplication.presentation.navigation
 
 object Routes {
     const val APP_LIST = "app_list"
