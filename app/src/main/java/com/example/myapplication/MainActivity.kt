@@ -30,7 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.navigation.AppNavGraph
+import com.example.myapplication.data.HardcodedAppRepository
+import com.example.myapplication.presentation.navigation.AppNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 
@@ -40,7 +41,24 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                AppNavGraph(modifier = Modifier.fillMaxSize())
+                val snackbarHostState = remember { SnackbarHostState() }
+                val coroutineScope = rememberCoroutineScope()
+                val appRepository = remember { HardcodedAppRepository() }
+
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+                ) { _ ->
+                    AppNavGraph(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        onShowMessage = { message ->
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(message)
+                            }
+                        },
+                        appRepository = appRepository
+                    )
+                }
             }
         }
     }
