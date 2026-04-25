@@ -13,7 +13,8 @@ import com.example.myapplication.applist.AppListScreen
 @Composable
 fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onShowMessage: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -24,7 +25,8 @@ fun AppNavGraph(
             AppListScreen(
                 onAppClick = { appId ->
                     navController.navigate(Routes.appDetails(appId))
-                }
+                },
+                onShowMessage = onShowMessage
             )
         }
         composable(
