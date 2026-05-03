@@ -1,4 +1,4 @@
-package com.example.myapplication.applist
+package com.example.myapplication.presentation.applist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,9 +34,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.SubcomposeAsyncImage
 import com.example.myapplication.domain.AppDetails
+import com.example.myapplication.domain.AppRepository
 import com.example.myapplication.ui.theme.RuStoreBlue
 import kotlinx.coroutines.flow.collectLatest
 
@@ -45,7 +45,9 @@ fun AppListScreen(
     onAppClick: (String) -> Unit,
     onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AppListViewModel = viewModel()
+    appRepository: AppRepository,
+    viewModelFactory: AppListViewModelFactory = AppListViewModelFactory(appRepository),
+    viewModel: AppListViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = viewModelFactory)
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
