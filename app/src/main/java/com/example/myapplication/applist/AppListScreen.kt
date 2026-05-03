@@ -53,6 +53,7 @@ fun AppListScreen(
         viewModel.events.collectLatest { event ->
             when (event) {
                 is AppListEvent.ShowLogoSnackbar -> onShowMessage(event.message)
+                is AppListEvent.ShowErrorSnackbar -> onShowMessage(event.message)
             }
         }
     }
