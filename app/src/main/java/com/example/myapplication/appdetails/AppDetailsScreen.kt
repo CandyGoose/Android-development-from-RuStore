@@ -63,6 +63,7 @@ fun AppDetailsScreen(
                 content = contentState,
                 onBackClick = { navController.navigateUp() },
                 onShareClick = { },
+                onWishlistClick = viewModel::toggleWishlist,
                 onInstallClick = { },
                 onReadMoreClick = { descriptionCollapsed = true },
                 onDeveloperClick = { },

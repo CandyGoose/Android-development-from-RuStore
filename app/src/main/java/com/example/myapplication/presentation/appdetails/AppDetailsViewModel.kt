@@ -10,6 +10,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -24,17 +26,33 @@ class AppDetailsViewModel @Inject constructor(
     val state: StateFlow<AppDetailsState> = _state.asStateFlow()
 
     init {
+        observeAppDetails()
+        loadAppDetails()
+    }
+
+    private fun loadAppDetails() {
         viewModelScope.launch {
-            runCatching { loadAppDetails() }
-                .onSuccess { details ->
-                    _state.value = AppDetailsState.Content(
-                        appDetails = details,
-                        descriptionCollapsed = false
-                    )
-                }
+            runCatching { appRepository.getAppDetails(appId) }
                 .onFailure { _state.value = AppDetailsState.Error }
         }
     }
 
-    private suspend fun loadAppDetails() = appRepository.getAppDetails(appId)
+    private fun observeAppDetails() {
+        viewModelScope.launch {
+            appRepository.observeAppDetails(appId)
+                .catch { _state.value = AppDetailsState.Error }
+                .collect { appDetails ->
+                    _state.value = AppDetailsState.Content(
+                        appDetails = appDetails,
+                        descriptionCollapsed = false
+                    )
+                }
+        }
+    }
+
+    fun toggleWishlist() {
+        viewModelScope.launch {
+            appRepository.toggleWishlist(appId)
+        }
+    }
 }
